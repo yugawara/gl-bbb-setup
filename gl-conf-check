@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+image=bigbluebutton/greenlight:v2
+
+sudo docker run --rm \
+    --env-file=greenlight.conf \
+    "$image" bundle exec rake conf:check
