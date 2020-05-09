@@ -1,0 +1,3 @@
+[submodule "bbb-install"]
+	path = bbb-install
+	url = https://github.com/bigbluebutton/bbb-install.git
