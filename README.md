@@ -10,6 +10,11 @@ Rough overview of servers involved. (Probably lots of inaccuracies here.)
   - not Dockerized
   - ports ??,??: HTTP API (and human-usable pages?)
   - UDP on ports 16384-32768
+- mongodb: Used by BBB to synchronize client state
+  - not Dockerized
+  - BBB install uses 3.4; probably we can use 3.6 from
+    <https://hub.docker.com/_/mongo/>
+  - ports ???
 - coturn (optional): TURN and STUN server for NAT traversal
   - must be on "separate server" from BBB, with a separate hostname
   - port 443 TLS (conflicts with nginx)
