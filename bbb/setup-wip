@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+#   This file contains work in progress on the Dockerization of BBB.
+#   After what's here has been debugged, it should be moved to the
+#   setup-image file and the build of that layer (about 15 minutes)
+#   re-run.
+
+#   XXX Docs at https://docs.bigbluebutton.org/2.2/troubleshooting.html
+#   and `bbb-conf --check` claim that only JRE 1.8 is supported, but
+#   the `bigbluebutton` package dependency graph claims (indirectly) that
+#   JRE 1.9 is ok, and the openjdk-8-jre package was brought in by something
+#   (though we don't know if that was BBB or some earlier package).
+apt-get install -y net-tools #openjdk-8-jdk
+
+sed -i.orig \
+    -e '/^[a-z]*JoinViaHTML5Client=/s/=false/=true/' \
+    -e '/^swfSlidesRequired=/s/=true/=false/' \
+    /usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties
+
+#   The following just makes life easier when debugging the built image.
+apt-get install -y bash-completion vim
+cat >> /root/.bashrc <<____
+
+# bbb container debugging additions
+. /etc/bash_completion
+set -o vi
+lf() { ls -CF "$@"; }
+____
+
+
+####################################################################
+#   Notes
+
+# * No IPv6, so disable it in FreeSWITCH:
+#   https://docs.bigbluebutton.org/2.2/troubleshooting.html#freeswitch-fails-to-bind-to-port-8021
+# * Requires kernel 4.x (docs show 4.15); perhaps 5.x is fine.
+# * Not running haveged; should be installed on host if necessary
+
+# * Separate mongodb container (Mongo 3.4)
+#     curl -L https://www.mongodb.org/static/pgp/server-3.4.asc | apt-key add -
+#     echo >/etc/apt/sources.list.d/mongodb-org-3.4.list \
+#         'deb [ arch=amd64,arm64 ]' \
+#         'http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse'
+#
+#   dr pull mongo:3-xenial
+#   dr run -d --name mongoserver mongo:3-xenial # exposes 27017

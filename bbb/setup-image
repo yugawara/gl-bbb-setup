@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+
+####################################################################
+#   Standard Ubuntu packages
+
+apt-get update
+apt-get -y dist-upgrade
+apt-get -y install \
+    language-pack-en iproute2 software-properties-common curl wget
+
+update-locale LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+####################################################################
+#   Third-party package repos and packages
+
+#   The following requires a UTF-8 environment because
+#   the GPG key has UTF-8 chars in the identity.
+add-apt-repository -y ppa:rmescandon/yq
+
+#   Set up deb.nodesource.com/node_8.x repo
+curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
+add-apt-repository -y ppa:bigbluebutton/support
+
+curl -L https://ubuntu.bigbluebutton.org/repo/bigbluebutton.asc | apt-key add -
+#   The above key is probably the same as ppa:bigbluebutton/suport.
+echo >/etc/apt/sources.list.d/bigbluebutton.list \
+    'deb https://ubuntu.bigbluebutton.org/xenial-22/ bigbluebutton-xenial main'
+
+apt-get update
+apt-get install -y nodejs bigbluebutton bbb-html5
+
+####################################################################
+
+#apt-get clean  # XXX

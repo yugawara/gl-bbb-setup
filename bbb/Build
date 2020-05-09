@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+basedir=$(cd "$(dirname "$0")" && pwd -P)
+
+cd "$basedir"
+sudo docker build -t bbb:test .
