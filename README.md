@@ -1,7 +1,24 @@
 Notes on BBB and Associated Servers
 ===================================
 
-Rough overview of servers involved. (Probably lots of inaccuracies here.)
+Other Dockerization Attempts
+----------------------------
+
+There appears to have been some work in the [BBB source repo][bbbsrc]
+on Dockerizing the whole BBB system; see the `labs/docker`
+subdirectory.
+
+[bbbsrc]: https://github.com/bigbluebutton/bigbluebutton
+
+
+Servers
+-------
+
+Rough overview of servers involved. (Probably lots of inaccuracies
+here.) There may be many more; have a look at `labs/docker/` in the
+source code which lists 14 locally-built images in the README along
+with several more pre-built images (greenlight, mongodb, redis) in the
+`docker-compose.yml`.
 
 - nginx: proxy to other servers below
   - not Dockerized
